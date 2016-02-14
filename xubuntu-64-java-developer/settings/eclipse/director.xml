@@ -1,0 +1,77 @@
+<project default="run.director">
+	<target name="help">
+		<echo>
+
+		ABOUT
+
+		Uses p2.director to install 1 or more IUs from given URL(s) (sourceSites) into a specified eclipse install folder (targetDir).
+
+		COMMANDLINE PARAMS
+		
+		install - csv list of features to install; if missing, install ALL found features.
+		
+		sourceSites - csv list of URLs from which to install
+		
+		targetDir - /full/path/to/an/existing/jbdevstudio/eclipse; folder must exist
+		
+		RUNNING THIS SCRIPT
+
+    This example will install JBoss Tools (Central only) and support for Maven:
+		
+		/path/to/eclipse-dir/eclipse -consolelog -nosplash -data /tmp -application org.eclipse.ant.core.antRunner \
+      		-f /path/to/director.xml \
+			-DsourceSites=http://download.jboss.org/jbosstools/updates/stable/kepler/,http://download.jboss.org/jbosstools/targetplatforms/jbosstoolstarget/kepler/ \
+			-DtargetDir=/path/to/eclipse-dir/ \
+			-Dinstall=org.jboss.tools.maven.feature.feature.group,org.jboss.tools.community.central.feature.feature.group
+
+</echo>
+	</target>
+
+	<property name="install" value="" />
+	<property name="sourceSites" value="" />
+	<property name="targetDir" value="" />
+
+	<target name="run.director">
+		<property name="p2.director.extraArgs" value="" />
+		<property name="p2.director.installIU" value="${install}" />
+		<property name="p2.director.install.path" value="${targetDir}" />
+		<property name="p2.director.input.repo" value="${sourceSites}" />
+
+		<!-- find profile folder: should only find one or this won't work -->
+		<dirset id="profileDirs" dir="${p2.director.install.path}/p2/org.eclipse.equinox.p2.engine/profileRegistry" includes="**/*profile"/>
+		<property name="profileDir" refid="profileDirs"/>
+		<!-- from epp.package.jee.profile, get epp.package.jee; if more than one profile found, just pick the last one -->
+		<basename file="${profileDir}" property="profileName"/>
+    	<script language="javascript"> <![CDATA[ 
+    		pns = project.getProperty("profileName").split(";"); pn = pns[pns.length-1]; pn = pn.replace(".profile",""); project.setProperty("profileName",pn);
+    	]]> </script>
+		<echo>Profile Name: ${profileName}
+Install Path: ${p2.director.install.path}
+Source Sites: ${p2.director.input.repo}
+IUS to Install:
+${install}
+</echo>
+
+		<mkdir dir="${p2.director.install.path}" />
+		<chmod perm="ugo+rwx" file="${p2.director.install.path}/eclipse" />
+		<exec executable="${p2.director.install.path}/eclipse" failonerror="true" dir="${p2.director.install.path}" timeout="1200000" taskname="p2.dir">
+			<!-- deprecated application for Eclipse 3.4: org.eclipse.equinox.p2.director.app.application -->
+			<arg line=" -application org.eclipse.equinox.p2.director" />
+			<arg line=" -clean -nosplash" />
+			<arg line=" --launcher.suppressErrors" />
+			<arg line=" -consoleLog" />
+			<arg line=" -flavor tooling" />
+			<!-- suspect this is not needed <arg line=" -roaming" /> -->
+			<arg line=" -profile ${profileName}" />
+			<arg line=" -destination ${p2.director.install.path}" />
+			<arg line=" -bundlepool ${p2.director.install.path}" />
+			<arg line=" -installIU ${p2.director.installIU}" />
+			<arg line=" -metadataRepository ${p2.director.input.repo}"/>
+			<arg line=" -artifactRepository ${p2.director.input.repo},file:${p2.director.install.path}" />
+			<arg line=" -profileProperties org.eclipse.update.install.features=true" />
+			<arg line=" -vmargs" />
+			<!-- this appears to cause: 'The copies of profile epp.package.jee are not in sync' <arg line=" -Declipse.p2.data.area=${p2.director.install.path}/p2" /> -->
+			<arg line=" -Declipse.p2.MD5Check=false" />
+		</exec>
+	</target>
+</project>

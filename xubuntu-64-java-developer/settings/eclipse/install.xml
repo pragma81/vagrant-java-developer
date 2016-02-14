@@ -1,0 +1,189 @@
+<project default="install">
+  <macrodef name="run-director">
+    <attribute name="input-repo" />
+    <attribute name="install-path" />
+    <attribute name="install-iu" />
+    <attribute name="profile-name" />
+    <element name="extra-args" implicit="true" optional="true" description="additional arg elements" />
+
+    <sequential>
+      <echo>
+Source Repo(s): @{input-repo}
+Install Path: @{install-path}
+Profile: @{profile-name}
+Installable Units:
+@{install-iu}
+</echo>
+
+      <mkdir dir="@{install-path}" />
+      <chmod perm="ugo+rwx" file="@{install-path}/eclipse" />
+      <exec executable="@{install-path}/eclipse"
+            failonerror="true"
+            dir="@{install-path}"
+            timeout="1200000"
+            taskname="p2.dir">
+        <!-- deprecated application for Eclipse 3.4: org.eclipse.equinox.p2.director.app.application -->
+        <arg line=" -application org.eclipse.equinox.p2.director" />
+        <arg line=" -nosplash" />
+        <arg line=" --launcher.suppressErrors" />
+        <arg line=" -consoleLog" />
+        <arg line=" -flavor tooling" />
+        <arg line=" -roaming" />
+        <arg line=" -profile @{profile-name}" />
+        <arg line=" -destination @{install-path}" />
+        <arg line=" -bundlepool @{install-path}" />
+        <arg line=" -installIU @{install-iu}" />
+        <arg line=" -metadataRepository @{input-repo}" />
+        <arg line=" -artifactRepository @{input-repo},file:@{install-path}" />
+        <arg line=" -profileProperties org.eclipse.update.install.features=true" />
+        <arg line=" -vmargs" />
+        <!-- this appears to cause: 'The copies of profile epp.package.jee are not in sync' <arg line=" -Declipse.p2.data.area=@{install-path}/p2" /> -->
+        <arg line=" -Declipse.p2.MD5Check=false" />
+        <extra-args />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <target name="help">
+    <echo>
+    COMMANDLINE PARAMS:
+
+    install   - csv list of features or feature.groups to install (without spaces); if missing, install ALL found features.
+
+    sourceZip - /full/path/to/jbosstools-Update-*.zip; zip must exist
+
+    targetDir - /full/path/to/an/existing/jbdevstudio/or/eclipse/; folder must exist
+
+    OPTIONAL / MAY BE REQUIRED:
+
+    otherRepos - csv list of local, zipped, or remote update sites from which to install 
+      additional feature groups, eg., from JBoss Central, use 
+        http://download.jboss.org/jbosstools/updates/stable/kepler/central/core/
+
+    RUNNING THIS SCRIPT:
+
+    This example will install all of JBoss Tools:
+
+    /path/to/eclipse-dir/eclipse -consolelog -nosplash -data /tmp \
+      -application org.eclipse.ant.core.antRunner \
+      -f /path/to/install.xml \
+      -DsourceZip=/path/to/jbosstools-Update-4.1.0.Final_2013-07-19_19-47-52-B380.zip \
+      -DtargetDir=/path/to/eclipse-dir \
+      -DotherRepos=http://download.jboss.org/jbosstools/updates/stable/kepler/central/core/
+
+    This example will install JBoss Tools (Central only) and support for Subclipse w/ SVNKit:
+
+    /path/to/eclipse-dir/eclipse -consolelog -nosplash -data /tmp \
+      -application org.eclipse.ant.core.antRunner \
+      -f /path/to/install.xml \
+      -DsourceZip=/path/to/jbosstools-Update-4.1.0.Final_2013-07-19_19-47-52-B380.zip \
+      -DtargetDir=/path/to/eclipse-dir \
+      -DotherRepos=http://download.jboss.org/jbosstools/updates/stable/kepler/central/core/
+      -Dinstall="org.jboss.tools.community.central.feature.feature.group,\
+org.tigris.subversion.subclipse.feature.group,\
+org.tigris.subversion.clientadapter.svnkit.feature.feature.group,\
+com.collabnet.subversion.merge.feature.feature.group,\
+net.java.dev.jna.feature.group,\
+org.tigris.subversion.clientadapter.feature.feature.group,\
+org.tigris.subversion.subclipse.graph.feature.feature.group,\
+org.tmatesoft.svnkit.feature.group"
+</echo>
+  </target>
+
+  <property name="install" value="" />
+  <property name="otherRepos" value="" />
+
+  <property name="sourceZip" value="" />
+  <property name="targetDir" value="" />
+
+  <target name="-validate">
+    <fail>
+      <condition>
+        <or>
+          <not>
+            <isset property="targetDir" />
+          </not>
+          <equals arg1="${targetDir}" arg2="" />
+          <not>
+            <available file="${targetDir}" type="dir" />
+          </not>
+        </or>
+      </condition>
+ERROR!
+Must specify path to an existing Eclipse or JBoss Developer Studio  
+install folder into which features will be installed.
+</fail>
+
+    <fail>
+      <condition>
+        <or>
+          <not>
+            <isset property="sourceZip" />
+          </not>
+          <equals arg1="${sourceZip}" arg2="" />
+        </or>
+      </condition>
+ERROR!
+Must specify path to a previously downloaded JBoss Tools 
+or JBoss Developer Studio Update site zip.  
+</fail>
+
+    <fail>
+      <condition>
+        <not>
+          <available file="${sourceZip}" type="file" />
+        </not>
+      </condition>
+ERROR!
+Cannot find sourceZip in ${sourceZip}. 
+</fail>
+
+    <condition property="ius.to.install" value="${install}">
+      <and>
+        <isset property="install" />
+        <not>
+          <equals arg1="${install}" arg2="" />
+        </not>
+      </and>
+    </condition>
+
+    <condition property="repo.suffix" value=",${otherRepos}" else="">
+      <and>
+        <isset property="otherRepos" />
+        <not>
+          <equals arg1="${otherRepos}" arg2="" />
+        </not>
+      </and>
+    </condition>
+  </target>
+
+  <!-- this target is only needed if a list of IUs is not provided so that the update site can be scanned for feature/*.jar files -->
+  <target name="-init-install" depends="-validate" unless="ius.to.install">
+    <pathconvert property="ius.to.install" pathsep=",">
+      <zipfileset src="${sourceZip}" includes="features/*.jar" />
+      <chainedmapper>
+        <flattenmapper />
+        <!-- simplified from old version; do we need to do weird stuff depending on what's after the underscore? -->
+        <regexpmapper from="([^_]+)_.*\.jar" to="\1" />
+        <globmapper from="*" to="*.feature.group" />
+      </chainedmapper>
+    </pathconvert>
+  </target>
+
+  <target name="install" depends="-init-install">
+    <!-- find profile folder: should only find one or this won't work -->
+    <dirset id="profileDirs" dir="${targetDir}/p2/org.eclipse.equinox.p2.engine/profileRegistry" includes="**/*profile"/>
+    <property name="profileDir" refid="profileDirs"/>
+    <!-- from epp.package.jee.profile, get epp.package.jee; if more than one profile found, just pick the last one -->
+    <basename file="${profileDir}" property="profileName"/>
+      <script language="javascript"> <![CDATA[ 
+        pns = project.getProperty("profileName").split(";"); pn = pns[pns.length-1]; pn = pn.replace(".profile",""); project.setProperty("profileName",pn);
+      ]]> </script>
+
+    <run-director install-iu="${ius.to.install}"
+                  install-path="${targetDir}"
+                  input-repo="jar:file:${sourceZip}!/${repo.suffix}" 
+                  profile-name="${profileName}" />
+  </target>
+
+</project>
