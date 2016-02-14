@@ -7,7 +7,7 @@
 
 ## Installation 
 1. Install Vagrant for your OS from the official download page https://www.vagrantup.com/downloads.html
-2. Install virtualbox for your OS from the official download page https://www.virtualbox.org/wiki/Downloads
+2. Install Virtualbox for your OS from the official download page https://www.virtualbox.org/wiki/Downloads
 3. Once vagrant is installed run ```vagrant plugin install vagrant-librarian-puppet```
 4. Once vagrant is installed run ```vagrant plugin install vagrant-vbguest```
 5. From the directory where you cloned the git repo run ```cd xubuntu-64-java-developer```

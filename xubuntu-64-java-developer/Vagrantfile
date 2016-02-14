@@ -79,7 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     
     #Provisioning docker using puppet and librarian puppet to manage internal and third parties modules.
     config.librarian_puppet.puppetfile_dir = "puppet"
-   
+       
     config.vm.provision "puppet" do |puppet|
         puppet.options        = '--debug --verbose --summarize --reports store'
         puppet.manifests_path = "puppet/manifests"
