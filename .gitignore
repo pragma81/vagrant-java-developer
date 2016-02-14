@@ -3,3 +3,7 @@
 # Example .gitignore files: https://github.com/github/gitignore
 /bower_components/
 /node_modules/
+/xubuntu-64-java-developer/.vagrant/**/
+/xubuntu-64-java-developer/puppet/.librarian/**/
+/xubuntu-64-java-developer/puppet/.tmp/**/
+/xubuntu-64-java-developer/puppet/modules/**/
