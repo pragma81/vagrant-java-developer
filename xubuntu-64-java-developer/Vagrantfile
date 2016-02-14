@@ -8,9 +8,9 @@ unless Vagrant.has_plugin?('vagrant-vbguest')
     raise 'The vagrant-vbguest plugin is missing. To install it run vagrant plugin install vagrant-vbguest'
 end
 
-unless Vagrant.has_plugin?('vagrant-librarian-puppet')
-    raise 'The vagrant-librarian-puppet plugin is missing. To install it run    vagrant plugin install vagrant-librarian-puppet'
-end
+#unless Vagrant.has_plugin?('vagrant-librarian-puppet')
+#    raise 'The vagrant-librarian-puppet plugin is missing. To install it run    vagrant plugin install vagrant-librarian-#puppet'
+#end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
@@ -78,8 +78,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision "java-ide", :type => "shell", :path => "java-ide.sh"
     
     #Provisioning docker using puppet and librarian puppet to manage internal and third parties modules.
-    config.librarian_puppet.puppetfile_dir = "puppet"
-       
+    #config.librarian_puppet.puppetfile_dir = "puppet"
+     
+    # r10k plugin to deploy puppet modules
+    config.r10k.puppet_dir = "puppet"
+    config.r10k.puppetfile_path = "puppet/Puppetfile"
+    
     config.vm.provision "puppet" do |puppet|
         puppet.options        = '--debug --verbose --summarize --reports store'
         puppet.manifests_path = "puppet/manifests"
