@@ -9,4 +9,4 @@
 /xubuntu-64-java-developer/puppet/modules/**/
 /xubuntu-64-java-developer/puppet/Puppetfile.lock
 .DS_Store
-**/.DS_Store
+*/.DS_Store
