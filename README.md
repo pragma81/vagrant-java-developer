@@ -25,7 +25,7 @@
 ## Windows Users
 This module is tested only on MAC OS 10.11.3.
 Currently it seems that librarian-puppet has some problems on windows 7. As workaround you need to comment out the puppet provisioner in the Vagrantfile. Obviuosly you will not get docker provisioned in your VM.
-Stay tuned as I'm testing the rk10 puppet package manager (into the related git branch) in order to resolve this issue.
+Stay tuned as I'm testing the r10k puppet package manager (into the related git branch) in order to resolve this issue.
 
 ##TO DO
 * To add m2e connector to eclipse for subeclipse and egit
