@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Eclipse
+Comment=
+Exec=/home/vagrant/tools/eclipse/eclipse
+Icon=/home/vagrant/tools/eclipse/icon.xpm
+Path=StartupNotify=false
+Terminal=false
+

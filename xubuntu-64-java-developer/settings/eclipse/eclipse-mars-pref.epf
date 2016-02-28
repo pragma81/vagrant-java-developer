@@ -1,0 +1,13 @@
+#Sun Feb 28 17:50:48 CET 2016
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.source=1.6
+@org.eclipse.jdt.core=3.11.2.v20160128-0629
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.compliance=1.6
+@org.eclipse.jdt.launching=3.8.0.v20150527-0946
+\!/=
+file_export_version=3.0
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+/instance/org.eclipse.jdt.launching/org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1456530896261">\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\n<vm id\="1456530689989" name\="java-8-oracle" path\="/usr/lib/jvm/java-8-oracle"/>\n<vm id\="1456530896261" name\="java-6-oracle" path\="/usr/lib/jvm/java-6-oracle"/>\n</vmType>\n</vmSettings>\n
+@org.eclipse.jdt.ui=3.11.2.v20151123-1510
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.formatterprofiles.version=12

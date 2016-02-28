@@ -8,9 +8,9 @@ unless Vagrant.has_plugin?('vagrant-vbguest')
     raise 'The vagrant-vbguest plugin is missing. To install it run vagrant plugin install vagrant-vbguest'
 end
 
-unless Vagrant.has_plugin?('vagrant-librarian-puppet')
-    raise 'The vagrant-librarian-puppet plugin is missing. To install it run    vagrant plugin install vagrant-librarian-puppet'
-end
+#unless Vagrant.has_plugin?('vagrant-librarian-puppet')
+#    raise 'The vagrant-librarian-puppet plugin is missing. To install it run    vagrant plugin install vagrant-librarian-#puppet'
+#end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
@@ -23,6 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  #config.vm.box_url = "http://192.168.99.100:8081/artifactory/vagrant-local/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -52,7 +53,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
 
-  config.vm.provider :virtualbox do |vb|
+
+    config.vm.provider :virtualbox do |vb|
     # Don't boot with headless mode
     vb.gui = true
 
@@ -61,30 +63,43 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize [
 	  "modifyvm", :id, 
 	  "--name", "Xubuntu 14.04 64 Java",
-	  "--memory", "2048",
+	  "--memory", "4096",
 	  "--cpus", "1",
       "--vram", "128"
 	] 
   end
   
     
+    config.vm.provision "apt-update", :type => "shell", :path => "apt-update.sh"
     
     config.vm.provision "vm-base", :type => "shell", :path => "vm-base.sh"
     
+    config.vm.provision "dev-base", :type => "shell", :path => "dev-base.sh"
+
     config.vm.provision "java-dev", :type => "shell", :path => "java-dev.sh"
     
     #config.vm.provision "puppet-java-dev", :type => "shell", :path => "puppet-java-dev.sh"
     
     config.vm.provision "java-ide", :type => "shell", :path => "java-ide.sh"
     
+    config.vm.provision "docker", :type => "shell", :path => "docker.sh"
+
+    config.vm.provision "java-servers", :type => "shell", :path => "java-servers.sh"
+
+    config.vm.provision "test-tools", :type => "shell", :path => "test-tools.sh"
+
+    config.vm.provision "browsers", :type => "shell", :path => "browsers.sh"
+
+    config.vm.provision "utility", :type => "shell", :path => "utility.sh"
+
     #Provisioning docker using puppet and librarian puppet to manage internal and third parties modules.
-    config.librarian_puppet.puppetfile_dir = "puppet"
+    #config.librarian_puppet.puppetfile_dir = "puppet"
        
-    config.vm.provision "puppet" do |puppet|
-        puppet.options        = '--debug --verbose --summarize --reports store'
-        puppet.manifests_path = "puppet/manifests"
-        puppet.module_path = "puppet/modules"
-    end
+    #config.vm.provision "puppet" do |puppet|
+    #    puppet.options        = '--debug --verbose --summarize --reports store'
+    #    puppet.manifests_path = "puppet/manifests"
+    #    puppet.module_path = "puppet/modules"
+    #end
     
   
 end

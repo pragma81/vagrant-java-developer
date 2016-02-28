@@ -28,11 +28,17 @@ Currently it seems that librarian-puppet has some problems on windows 7. As work
 Stay tuned as I'm testing the r10k puppet package manager (into the related git branch) in order to resolve this issue.
 
 ##TO DO
+* TO enforce VM security
 * To add m2e connector to eclipse for subeclipse and egit
 * To add chrome browser
-* To add Tomcat or other java server
+* To add Wildfly 10 or other java server
 * To add database tooling such as squirrel
 * To add test tools and API test such as SOAP UI
 * To configure default maven settings
 * To tune eclipse configuration such as workspace default dir, java coding conventions
+* To import standard eclipse preferences
+* To add multiple java runtime
+* To set default eclipse init parameters
+* To tuning VM parameters (memory, network, io)
+* To set JAVA_HOME
 * To investigate the use of puppet as central package and configuration management tool and avoid shell scripting. Need hands-on to proof real benefit of using puppet when comparing to pure shell scripting based provisioning
