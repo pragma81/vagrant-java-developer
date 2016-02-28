@@ -15,13 +15,18 @@
 7. Once the VM is installed and tools provisioned you can ssh into VM using ```vagrant ssh``` or login through UI using username:*vagrant* passw:*vagrant*
 
 ## Tools Installed
-* Maven 3 (shell provisioned)
-* Java 8 (shell provisioned)
-* Git (shell provisioned )
-* Eclipse Mars (shell provisioned)
-* Eclipse plug-ins through p2 director (subeclipse plugin, m2e connector for logback)
-* Docker (puppet provisioned)
-
+* Maven 3 
+* Java 6 and Java 8 
+* Git 1.9.1
+* Git-flow 0.4.2
+* Eclipse Mars.2  
+* Eclipse plug-ins through p2 director (subeclipse plugin, m2e connector for logback,spring-ide, m2e git)
+* Docker 1.6 
+* Docker Compose 1.6
+* Chrome 48
+* Jboss AS 7 and Wildfly 10
+* Jmeter 2.8
+* Notepadqq
 ## Windows Users
 This module is tested only on MAC OS 10.11.3.
 Currently it seems that librarian-puppet has some problems on windows 7. As workaround you need to comment out the puppet provisioner in the Vagrantfile. Obviuosly you will not get docker provisioned in your VM.
@@ -29,16 +34,16 @@ Stay tuned as I'm testing the r10k puppet package manager (into the related git 
 
 ##TO DO
 * TO enforce VM security
-* To add m2e connector to eclipse for subeclipse and egit
-* To add chrome browser
-* To add Wildfly 10 or other java server
+* <s>To add m2e connector to eclipse for subeclipse and egit</s>
+* <s>To add chrome browser</s>
+* <s>To add Wildfly 10 or other java server</s>
 * To add database tooling such as squirrel
-* To add test tools and API test such as SOAP UI
+* To add test tools and API test such as SOAP UI and Jmeter
 * To configure default maven settings
 * To tune eclipse configuration such as workspace default dir, java coding conventions
 * To import standard eclipse preferences
-* To add multiple java runtime
+* <s>To add multiple java runtime</s>
 * To set default eclipse init parameters
 * To tuning VM parameters (memory, network, io)
 * To set JAVA_HOME
-* To investigate the use of puppet as central package and configuration management tool and avoid shell scripting. Need hands-on to proof real benefit of using puppet when comparing to pure shell scripting based provisioning
+* <s>To investigate the use of puppet as central package and configuration management tool and avoid shell scripting. Need hands-on to proof real benefit of using puppet when comparing to pure shell scripting based provisioning</s>
