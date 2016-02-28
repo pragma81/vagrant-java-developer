@@ -12,7 +12,8 @@
 4. Once vagrant is installed run ```vagrant plugin install vagrant-vbguest```
 5. From the directory where you cloned the git repo run ```cd xubuntu-64-java-developer```
 6. Run ```vagrant up```
-7. Once the VM is installed and tools provisioned you can ssh into VM using ```vagrant ssh``` or login through UI using username:*vagrant* passw:*vagrant*
+7. Once the VM is installed and tools provisioned run ```vagrant up```
+8. You can now log into VM using ```vagrant ssh``` or login through UI using username:*vagrant* passw:*vagrant*
 
 ## Tools Installed
 * Maven 3 
