@@ -28,6 +28,7 @@
 * Jboss AS 7 and Wildfly 10
 * Jmeter 2.8
 * Notepadqq
+
 ## Windows Users
 This module is tested only on MAC OS 10.11.3.
 Currently it seems that librarian-puppet has some problems on windows 7. As workaround you need to comment out the puppet provisioner in the Vagrantfile. Obviuosly you will not get docker provisioned in your VM.
