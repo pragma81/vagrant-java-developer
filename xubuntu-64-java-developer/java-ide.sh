@@ -15,7 +15,7 @@ else
     echo "------------------------"
  #   wget http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/kepler/SR2/eclipse-jee-kepler-SR2-linux-gtk-       x86_64.tar.gz -P /tmp
 
-    wget http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/mars/2-RC3/eclipse-jee-mars-2-RC3-linux-gtk-x86_64.tar.gz   -P /tmp
+    wget http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/mars/2/eclipse-jee-mars-2-linux-gtk-x86_64.tar.gz   -P /tmp
 
      #wget http://192.168.99.100:8081/artifactory/eclipse-ide-local/eclipse-jee-mars-2-RC3-linux-gtk-x86_64.tar.gz -P /tmp
 
